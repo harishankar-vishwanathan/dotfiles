@@ -1,0 +1,150 @@
+set nocompatible
+
+syntax on
+set number
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set ruler
+set autoindent
+set ignorecase
+set ls=2
+set shell=/usr/local/bin/zsh
+set textwidth=75
+set completeopt -=preview
+set hidden
+set hlsearch
+set incsearch
+set showmatch
+set history=1000         " remember more commands and search history
+set undolevels=1000      " use many muchos levels of undo
+set title
+
+set pastetoggle=<F2>
+
+set t_Co=256
+" airline
+" Airline options
+let g:airline_enable_branch = 1
+let g:airline_enable_syntastic = 1
+let g:airline_theme = 'gruvbox'
+let g:airline_detect_paste=1
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+"enable/disable fugitive/lawrencium integration >
+let g:airline#extensions#branch#enabled = 1
+
+" change the text for when no branch is detected >
+let g:airline#extensions#branch#empty_message = ''
+
+" Buffergator
+" Use the right side of the screen
+let g:buffergator_viewport_split_policy = 'R'
+
+" I want my own keymappings...
+let g:buffergator_suppress_keymaps = 1
+
+" Looper buffers
+"let g:buffergator_mru_cycle_loop = 1
+
+" Go to the previous buffer open
+nmap <leader>j :BuffergatorMruCyclePrev<cr>
+
+" Go to the next buffer open
+nmap <leader>k :BuffergatorMruCycleNext<cr>
+
+" View the entire list of buffers open
+nmap <leader>bl :BuffergatorOpen<cr>
+
+" Close buffer.
+nmap <leader>l :bd<cr>
+
+" Shared bindings from Solution #1 from earlier
+nmap <leader>T :enew<cr>
+nmap <leader>bq :bp <BAR> bd #<cr>
+
+  " CtrlP
+" Setup some default ignores
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg|o)$',
+\}
+
+" Use the nearest .git directory as the cwd
+" This makes a lot of sense if you are working on a project that is in version
+" control. It also supports works with .svn, .hg, .bzr.
+let g:ctrlp_working_path_mode = 'r'
+
+" Use a leader instead of the actual named binding
+nmap <leader>p :CtrlPTag<cr>
+
+" Easy bindings for its various modes
+nmap <leader>bb :CtrlPBuffer<cr>
+nmap <leader>bm :CtrlPMixed<cr>
+nmap <leader>bs :CtrlPMRU<cr>
+
+"Command T
+set wildignore+=*.o,*.png
+noremap <leader>o <Esc>:CommandT<CR>
+noremap <leader>O <Esc>:CommandTFlush<CR>
+noremap <leader>m <Esc>:CommandTBuffer<CR>
+
+" Wrap gitcommit file types at the appropriate length
+filetype indent plugin on
+
+" realign buffers when iterm goes fullscreen
+augroup FixProportionsOnResize
+  au!
+  au VimResized * exe "normal! \<c-w>="
+augroup END
+
+" macos vs linux clipboard
+if has("mac")
+  set clipboard+=unnamed
+else
+  set clipboard=unnamedplus
+endif 
+
+" backup/persistance settings
+set undodir=~/.vim/tmp/undo//
+set backupdir=~/.vim/tmp/backup//
+set directory=~/.vim/tmp/swap//
+set backupskip=/tmp/*,/private/tmp/*"
+set backup
+set writebackup
+set noswapfile
+
+augroup line_return
+    au!
+    au BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \     execute 'normal! g`"zvzz' |
+        \ endif
+augroup END
+
+set omnifunc=syntaxcomplete#Complete
+
+" intellij style autocomplete shortcut
+inoremap <C-@> <C-x><C-o>
+inoremap <C-Space> <C-x><C-o>
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
+highlight Pmenu ctermfg=red ctermbg=white
+highlight PmenuSel ctermfg=white ctermbg=red
+call pathogen#infect()
+call pathogen#helptags()
+
+let delimitMate_expand_cr = 1
+
+let g:tagbar_usearrows = 1
+nnoremap <leader>i :TagbarToggle<CR>
+
+set background=dark
+colorscheme gruvbox
+highlight Comment ctermfg=235
+highlight Comment ctermbg=246
